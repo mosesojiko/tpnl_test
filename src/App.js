@@ -1,24 +1,55 @@
-import logo from './logo.svg';
+
+import axios from "axios"
+import { useEffect, useState } from "react";
 import './App.css';
 
+
 function App() {
+
+  const [result, setResult] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
+  const fetchData = async () => {
+    setLoading(true)
+   try {
+     const { data } = await axios.get("https://interviewtst.herokuapp.com/get-all-users")
+     setLoading(false)
+     setResult(data)
+   } catch (error) {
+    setError(error.message)
+   }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+  console.log(result)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   
+    <div className="container">
+      <h1 style={{textAlign:"center"}}>Display names and emails</h1>
+      <div className="userDetails">
+        {
+          loading &&
+          <p>Loading, please wait a minute.</p>
+        }
+        {
+          error && <p>{ error}</p>
+        }
+        {
+          result.User_Details?.map((res) => (
+            <div className="userResult" key={res.user_id}>
+              <p style={{ fontWeight: "bold", marginRight: "5px" }}>{res.firstname}{ ":"}</p>
+              <p>{ res.email}</p>
+            </div>
+          ))
+        }
+
+      </div>
+      </div>
+      
+        
   );
 }
 
