@@ -35,7 +35,7 @@ function ProfilePage() {
         e.preventDefault()
         setLoading(true)
         try {
-            await axios.put(`https://interviewtst.herokuapp.com/update-user-phone_no/${id} `);
+            await axios.put(`https://interviewtst.herokuapp.com/update-user-phone_no/${id}`,{phone_no});
             setLoading(false)
             setSuccess(true)
             setPhone_no("")
